@@ -7,9 +7,7 @@ https://www.blender.org/
 https://github.com/IfcOpenShell/IfcOpenShell/releases/
 
 ## Download BlenderBIM from blenderbim.org
-
 https://blenderbim.org/
 
 ## IFC 4X3 Test File here:
-episode-01/resources/MAD-scientist.ifc
-
+https://raw.githubusercontent.com/myoualid/ifc-101-course/main/episode-01/Resources/MAD_SCIENTIST_21.ifc
