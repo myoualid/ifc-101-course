@@ -4,6 +4,11 @@ A video-series on IFC and BlenderBIM
 Find it here : 
 https://www.youtube.com/playlist?list=PLbFY94gzUJhGkxOUZknWupIiBnY5A0KUM
 
+## Episode 1 - Installing Blender and BlenderBIM ( & Ifcopenshell)
+
+<iframe width="1000" height="670" src="https://www.youtube.com/embed/GpnCiIMhWDo" title="Episode 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="true"></iframe>
+
+
 ### Episode - 01 - Installation of Blender and BlenderBIM - 3 minutes
 ### Episode - 02 - Loading a file and navigation Basics - 2 minutes
 ### Episode - 03 - IFC Spatial Structure and IFC Relationships - 7 minutes 
