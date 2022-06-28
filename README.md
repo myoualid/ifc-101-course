@@ -4,19 +4,22 @@ A video-series on IFC and BlenderBIM
 Find it here : 
 https://www.youtube.com/playlist?list=PLbFY94gzUJhGkxOUZknWupIiBnY5A0KUM
 
-## Episode 1 - Installing Blender and BlenderBIM ( & Ifcopenshell)
+Part 1 - OUT
+-----
+## Episode - 01 - Installing Blender and BlenderBIM ( & Ifcopenshell)
+## Episode - 02 - Loading a file and navigation Basics - 2 minutes
+## Episode - 03 - IFC Spatial Structure and IFC Relationships - 7 minutes 
+## Episode - 04 - IFC Classes, Attributes, Relationships and Class Hierarchy. - 10 minutes
 
-<iframe width="1000" height="670" src="https://www.youtube.com/embed/GpnCiIMhWDo" title="Episode 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="true"></iframe>
+Part 2 - OUT
+------
+## Episode - 05A - Ifc Property Sets - 7 minutes
+## Episode - 05B - Ifc Quantity Sets  - 7 minutes
+## Episode - 06 - Importing 4D data with IFC4D module
+## Episode - 07 - Quick Animation Tools - 4D BlenderBIM
 
-
-### Episode - 01 - Installation of Blender and BlenderBIM - 3 minutes
-### Episode - 02 - Loading a file and navigation Basics - 2 minutes
-### Episode - 03 - IFC Spatial Structure and IFC Relationships - 7 minutes 
-### Episode - 04 - IFC Classes, Attributes, Relationships and Class Hierarchy. - 10 minutes
-### Episode - 05 - Ifc Property Sets and Ifc Quantity Sets - 10 minutes
-### Episode - 06 - Ifc Material layers - 7 minutes
-### Episode - 07 - Importing 4D data with IFC4D
-### Episode - 08 - Extracting data from an .IFC file to .CSV spreasheet
-### Episode - 08 - Bonus Video- Using the IFCCSV Tool module
-### Episode - 09 - Creating a DashBoard Application, Part 1
-### Episode - 10 - Creating a DashBoard Application, Part 2
+Part 3 - RELEASE 04/07/2022
+-----
+## Episode - 08 - Extracting data from an .IFC file to .CSV spreasheet
+## Episode - 09 - Creating a DashBoard Application, Part 1
+## Episode - 10 - Creating a DashBoard Application, Part 2
