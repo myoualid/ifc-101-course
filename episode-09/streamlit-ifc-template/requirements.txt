@@ -1,0 +1,6 @@
+streamlit
+ifcopenshell-python
+matplotlib
+plotly
+pandas
+xlsxwriter
