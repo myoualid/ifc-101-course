@@ -1,9 +1,5 @@
 ## Instructions
 
-In your desired location in your machine, clone the repo with :
-
-`git clone ifc-streamlit`
-
 ## Install Python 
 For the latest streamlit versions, we need to have python 3.10 and higher install *(as of Octobre 2022)*.
 
