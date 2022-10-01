@@ -8,10 +8,10 @@ https://www.youtube.com/playlist?list=PLbFY94gzUJhGkxOUZknWupIiBnY5A0KUM
 In part 1, we install Blender and BlenderBIM.
 We also learn to navigate within Blender and learn some IFC Schema basics.
 
-### Episode - 01 - Installing Blender and BlenderBIM ( & Ifcopenshell)
-### Episode - 02 - Loading a file and navigation Basics - 2 minutes
-### Episode - 03 - IFC Spatial Structure and IFC Relationships - 7 minutes 
-### Episode - 04 - IFC Classes, Attributes, Relationships and Class Hierarchy. - 10 minutes
+- Episode - 01 - Installing Blender and BlenderBIM ( & Ifcopenshell)
+- Episode - 02 - Loading a file and navigation Basics - 2 minutes
+- Episode - 03 - IFC Spatial Structure and IFC Relationships - 7 minutes 
+- Episode - 04 - IFC Classes, Attributes, Relationships and Class Hierarchy. - 10 minutes
 -----
 ## Part 2 - Released ✔️
 In part 2, we dig into properties and quantities and how they are stored in the IFC schema.
