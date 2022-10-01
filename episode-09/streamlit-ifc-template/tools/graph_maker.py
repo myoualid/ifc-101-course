@@ -1,6 +1,6 @@
 from tools import ifchelper
 from matplotlib import pyplot as plt
-
+import plotly.express as px
 
 style = {
     "figure.figsize": (8, 4.5),
@@ -65,7 +65,6 @@ def get_high_frequency_entities_graph(file):
     return ax.figure
 
 def load_graph(dataframe, quantity_set, quantity, user_option):
-    import plotly.express as px
     if quantity != "Count":
         column_name = f"{quantity_set}.{quantity}"
         figure_pie_chart = px.pie(
