@@ -7,18 +7,6 @@ def callback_upload():
     session["ifc_file"] = ifcopenshell.file.from_string(session["array_buffer"].decode("utf-8"))
     session["is_file_loaded"] = True
     
-    ### Empty Previous Model Data from Session State
-    session["isHealthDataLoaded"] = False
-    session["HealthData"] = {}
-    session["Graphs"] = {}
-    session["SequenceData"] = {}
-    session["CostScheduleData"] = {}
-
-    ### Empty Previous DataFrame from Session State
-    session["DataFrame"] = None
-    session["Classes"] = []
-    session["IsDataFrameLoaded"] = False
-
 def get_project_name():
     return session.ifc_file.by_type("IfcProject")[0].Name
 

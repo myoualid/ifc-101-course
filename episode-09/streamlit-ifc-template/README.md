@@ -3,9 +3,9 @@
 ### Python 
 For the latest streamlit versions, we need to have python 3.10 and higher installed *(as of Octobre 2022)*.
 
-### Navigate to the project folder:
+## Navigate to the project folder:
 
-`cd ifc-101-course/episode-09/streamlit-ifc-template`
+`cd ifc-101-course/episode-09/ifc-streamlit/streamlit-ifc-template`
 
 ### Install Dependencies 
 
