@@ -28,6 +28,6 @@ Hey ! IFC is reach in features, so we'll import Construction Scheduling Data int
 Let's forget about IFC complexity and use the ifcopenshell utilities to get object easily.
 - Episode - 08 - Extracting data from an .IFC file to Json, Pandas, csv , excel
 
-## Part 5 - ⌛⌛⌛ Coming 02/10/2022 
+## Part 5 - Released ✔️
 Let's create a BIM application with python!
 - Episode - 09 - Creating an IFC Application, Live Coding
