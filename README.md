@@ -30,5 +30,4 @@ Let's forget about IFC complexity and use the ifcopenshell utilities to get obje
 
 ## Part 5 - ⌛⌛⌛ Coming 02/10/2022 
 Let's create a BIM application with python!
-- Episode - 09 - Creating an IFC Application, Code Review
-- Episode - 10 - Creating an IFC Application, Live Coding
+- Episode - 09 - Creating an IFC Application, Live Coding
