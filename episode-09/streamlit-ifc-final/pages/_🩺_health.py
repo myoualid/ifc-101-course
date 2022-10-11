@@ -1,7 +1,10 @@
+from email.policy import default
 import streamlit as st
 from tools import ifchelper
 from tools import graph_maker
 from datetime import datetime
+
+import ifcopenshell
 
 def initialize_session_state():
     session["isHealthDataLoaded"] = False
@@ -45,8 +48,7 @@ def add_work_schedule():
     ifchelper.create_work_schedule(session.ifc_file, session["schedule_input"])
     load_work_schedules()
     
-
-def draw_model_health_ui():
+def draw_graphs():
     row1_col1, row1_col2 = st.columns(2)
     with row1_col1:
         graph = session.Graphs["objects_graph"]
@@ -55,6 +57,7 @@ def draw_model_health_ui():
         graph = session.Graphs["high_frquency_graph"]
         st.pyplot(graph)
     
+def draw_schedules():
     col1, col2 = st.columns(2)
     with col1:
         number_of_schedules = len(session.SequenceData["schedules"])
@@ -84,6 +87,7 @@ def draw_model_health_ui():
         st.selectbox("Cost Schedules", [f'{cost_schedule.Name} ({cost_schedule.id( )})' for cost_schedule in session.CostData["schedules"] or []])
         if not session.ifc_file.by_type("IfcCostItem"):
             st.warning("No Cost Items 😥")
+
 def draw_side_bar():    
     def save_file():
         session.ifc_file.write(session.file_name)
@@ -100,7 +104,92 @@ def draw_side_bar():
     ## File Saver
     st.sidebar.button("💾 Save File", key="save_file", on_click=save_file)
 
+def initialise_debug_props(force=False):
+    if not "BIMDebugProperties" in session:
+        session.BIMDebugProperties = {
+            "step_id": 0,
+            "number_of_polygons": 0,
+            "percentile_of_polygons": 0,
+            "active_step_id": 0,
+            "step_id_breadcrumb": [],
+            "attributes": [],
+            "inverse_attributes": [],
+            "inverse_references": [],
+            "express_file": None,
+        }
+    if force:
+        session.BIMDebugProperties = {
+            "step_id": 0,
+            "number_of_polygons": 0,
+            "percentile_of_polygons": 0,
+            "active_step_id": 0,
+            "step_id_breadcrumb": [],
+            "attributes": [],
+            "inverse_attributes": [],
+            "inverse_references": [],
+            "express_file": None,
+        }
+
+def get_object_data(fromId=None):
+    def add_attribute(prop, key, value):
+        if isinstance(value, tuple) and len(value) < 10:
+            for i, item in enumerate(value):
+                add_attribute(prop, key + f"[{i}]", item)
+            return
+        elif isinstance(value, tuple) and len(value) >= 10:
+            key = key + "({})".format(len(value))
+        
+        propy = {
+            "name": key,
+            "string_value": str(value),
+            "int_value": int(value.id()) if isinstance(value, ifcopenshell.entity_instance) else None,
+        }
+        prop.append(propy)
+            
+    if session.BIMDebugProperties:
+        initialise_debug_props(force=True)
+        step_id = 0
+        if fromId:
+            step_id = fromId
+        else:
+            step_id = int(session.object_id) if session.object_id else 0
+        debug_props = st.session_state.BIMDebugProperties
+        debug_props["active_step_id"] = step_id
+        crumb = {"name": str(step_id)}
+        debug_props["step_id_breadcrumb"].append(crumb)
+        element = session.ifc_file.by_id(step_id)
+        debug_props["inverse_attributes"] = []
+        debug_props["inverse_references"] = []
+        
+        for key, value in element.get_info().items():
+            add_attribute(debug_props["attributes"], key, value)
+
+        for key in dir(element):
+            if (
+                not key[0].isalpha()
+                or key[0] != key[0].upper()
+                or key in element.get_info()
+                or not getattr(element, key)
+            ):
+                continue
+            add_attribute(debug_props["inverse_attributes"], key, getattr(element, key))
+        
+        for inverse in session.ifc_file.get_inverse(element):
+            propy = {
+                "string_value": str(inverse),
+                "int_value": inverse.id(),
+            }
+            debug_props["inverse_references"].append(propy)
+            
+        print(debug_props["attributes"])
+
+def edit_object_data(object_id, attribute):
+    entity = session.ifc_file.by_id(object_id)
+    print(getattr(entity, attribute))
+    
 def execute():
+    
+    initialise_debug_props()
     st.header(" 🩺 Model Health")
 
     if "isHealthDataLoaded" not in session:
@@ -110,7 +199,52 @@ def execute():
         load_data()
 
     if session.isHealthDataLoaded:
-        draw_model_health_ui()
+        tab1, tab2, tab3 = st.tabs(["📊 Debug", "📈 Charts", "📝 Schedules"])
+        with tab1:
+            row1_col1, row1_col2 = st.columns([1,5])
+            with row1_col1:
+                st.text_input("Object ID", key="object_id")
+                st.button("Inspect from Object Id", key="get_object_button", on_click=get_object_data, args=(session.object_id,))
+            if "BIMDebugProperties" in session and session.BIMDebugProperties:
+                props = session.BIMDebugProperties
+                if props["attributes"]:
+                    st.subheader("Attributes")
+                    # st.table(props["attributes"])
+                    for prop in props["attributes"]:
+                        col2, col3 = st.columns([3,3])
+                        if prop["int_value"]:
+                            col2.text(f'🔗 {prop["name"]}')
+                            col2.info(prop["string_value"])
+                            col3.write("🔗")
+                            col3.button("Get Object", key=f'get_object_pop_button_{prop["int_value"]}', on_click=get_object_data, args=(prop["int_value"],))
+                        else:
+                            col2.text_input(label=prop["name"], key=prop["name"], value=prop["string_value"])
+                            # col3.button("Edit Object", key=f'edit_object_{prop["name"]}', on_click=edit_object_data, args=(props["active_step_id"],prop["name"]))
+                            
+                if props["inverse_attributes"]:
+                    
+                    st.subheader("Inverse Attributes")
+                    for inverse in props["inverse_attributes"]:
+                        col1, col2, col3 = st.columns([3,5,8])
+                        col1.text(inverse["name"])
+                        col2.text(inverse["string_value"])
+                        if inverse["int_value"]:
+                            col3.button("Get Object", key=f'get_object_pop_button_{inverse["int_value"]}', on_click=get_object_data, args=(inverse["int_value"],))
+                    # st.table(props["inverse_attributes"])
+                
+                ## draw inverse references
+                if props["inverse_references"]:
+                    st.subheader("Inverse References")
+                    for inverse in props["inverse_references"]:
+                        col1, col3 = st.columns([3,3])
+                        col1.text(inverse["string_value"])
+                        if inverse["int_value"]:
+                            col3.button("Get Object", key=f'get_object_pop_button_inverse_{inverse["int_value"]}', on_click=get_object_data, args=(inverse["int_value"],))
+                    # st.table(props["inverse_references"])
+        with tab2:
+            draw_graphs()
+        with tab3:
+            draw_schedules()
         draw_side_bar()
     else:
         st.header("Step 1: Load a file from the Home Page")
