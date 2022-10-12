@@ -6,7 +6,7 @@ import {
 	IFCRELDEFINESBYTYPE,
 	IFCPROJECT,
 	IfcAPI
-} from './ifc/web-ifc-api.js';
+} from './IFC/web-ifc-api.js';
 import {
 	BufferAttribute,
 	Mesh,
