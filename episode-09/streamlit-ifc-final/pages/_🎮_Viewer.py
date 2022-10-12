@@ -137,55 +137,52 @@ def write_pset_data():
             st.table(pset["Data"])    
 
 def write_health_data():
-    data = get_psets_from_ifc_js()
-    if data:
-        st.subheader("🧮 Object Health")
+    st.subheader("🩺 Debugger")
+    ## REPLICATE IFC DEBUG PANNEL
+    row1_col1, row1_col2 = st.columns([1,5])
+    with row1_col1:
+        st.number_input("Object ID", key="object_id")
+    with row1_col2:
+        st.button("Inspect From Id", key="edit_object_button", on_click=get_object_data, args=(st.session_state.object_id,))
+        data = get_psets_from_ifc_js()
+        if data:
+            st.button("Inspect from Model", key="get_object_button", on_click=get_object_data, args=(data['id'],)) if data else ""
 
-        row1_col1, row1_col2 = st.columns([1,5])
-        with row1_col1:
-            st.number_input("Object ID", key="object_id")
-        with row1_col2:
-            button = st.button("Inspect from Model", key="get_object_button", on_click=get_object_data, args=(data['id'],))
-            button2 = st.button("Inspect From Id", key="edit_object_button", on_click=get_object_data, args=(st.session_state.object_id,))
+    if "BIMDebugProperties" in session and session.BIMDebugProperties:
+        props = session.BIMDebugProperties
+        if props["attributes"]:
+            st.subheader("Attributes")
+            # st.table(props["attributes"])
+            for prop in props["attributes"]:
+                col2, col3 = st.columns([3,3])
+                if prop["int_value"]:
+                    col2.text(f'🔗 {prop["name"]}')
+                    col2.info(prop["string_value"])
+                    col3.write("🔗")
+                    col3.button("Get Object", key=f'get_object_pop_button_{prop["int_value"]}', on_click=get_object_data, args=(prop["int_value"],))
+                else:
+                    col2.text_input(label=prop["name"], key=prop["name"], value=prop["string_value"])
+                    # col3.button("Edit Object", key=f'edit_object_{prop["name"]}', on_click=edit_object_data, args=(props["active_step_id"],prop["name"]))
+                    
+        if props["inverse_attributes"]:
+            st.subheader("Inverse Attributes")
+            for inverse in props["inverse_attributes"]:
+                col1, col2, col3 = st.columns([3,5,8])
+                col1.text(inverse["name"])
+                col2.text(inverse["string_value"])
+                if inverse["int_value"]:
+                    col3.button("Get Object", key=f'get_object_pop_button_{inverse["int_value"]}', on_click=get_object_data, args=(inverse["int_value"],))
+        
+        ## draw inverse references
+        if props["inverse_references"]:
+            st.subheader("Inverse References")
+            for inverse in props["inverse_references"]:
+                col1, col3 = st.columns([3,3])
+                col1.text(inverse["string_value"])
+                if inverse["int_value"]:
+                    col3.button("Get Object", key=f'get_object_pop_button_inverse_{inverse["int_value"]}', on_click=get_object_data, args=(inverse["int_value"],))
+            
 
-            
-        if "BIMDebugProperties" in session and session.BIMDebugProperties:
-            props = session.BIMDebugProperties
-            if props["attributes"]:
-                st.subheader("Attributes")
-                # st.table(props["attributes"])
-                for prop in props["attributes"]:
-                    col2, col3 = st.columns([3,3])
-                    if prop["int_value"]:
-                        col2.text(f'🔗 {prop["name"]}')
-                        col2.info(prop["string_value"])
-                        col3.write("🔗")
-                        col3.button("Get Object", key=f'get_object_pop_button_{prop["int_value"]}', on_click=get_object_data, args=(prop["int_value"],))
-                    else:
-                        col2.text_input(label=prop["name"], key=prop["name"], value=prop["string_value"])
-                        # col3.button("Edit Object", key=f'edit_object_{prop["name"]}', on_click=edit_object_data, args=(props["active_step_id"],prop["name"]))
-                        
-            if props["inverse_attributes"]:
-                
-                st.subheader("Inverse Attributes")
-                for inverse in props["inverse_attributes"]:
-                    col1, col2, col3 = st.columns([3,5,8])
-                    col1.text(inverse["name"])
-                    col2.text(inverse["string_value"])
-                    if inverse["int_value"]:
-                        col3.button("Get Object", key=f'get_object_pop_button_{inverse["int_value"]}', on_click=get_object_data, args=(inverse["int_value"],))
-                # st.table(props["inverse_attributes"])
-            
-            ## draw inverse references
-            if props["inverse_references"]:
-                st.subheader("Inverse References")
-                for inverse in props["inverse_references"]:
-                    col1, col3 = st.columns([3,3])
-                    col1.text(inverse["string_value"])
-                    if inverse["int_value"]:
-                        col3.button("Get Object", key=f'get_object_pop_button_inverse_{inverse["int_value"]}', on_click=get_object_data, args=(inverse["int_value"],))
-               
-    
 
     
 def execute():
@@ -195,7 +192,7 @@ def execute():
         if "ifc_js_response" not in session:
             session["ifc_js_response"] = ""
         draw_3d_viewer()
-        tab1, tab2 = st.tabs(["🧮 Properties", "🧮 Health"])
+        tab1, tab2 = st.tabs(["🧮 Properties", "🩺 Debugger"])
         with tab1:
             write_pset_data()
         with tab2:

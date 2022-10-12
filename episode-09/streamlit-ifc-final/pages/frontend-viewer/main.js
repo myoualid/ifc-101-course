@@ -13,6 +13,13 @@ import {
 } from "./vendor/three.module.js";
 import { OrbitControls } from "./vendor/OrbitControls.js";
 
+import {
+  acceleratedRaycast,
+  computeBoundsTree,
+  disposeBoundsTree
+} from './vendor/three-mesh-bvh/three-mesh-bvh.js';
+
+
 // The `Streamlit` object exists because our html file includes
 // `streamlit-component-lib.js`.
 // If you get an error about "Streamlit" not being defined, that
@@ -102,6 +109,12 @@ function setup(){
     //Sets up the IFC loading
 
     ifc.setWasmPath("./vendor/IFC/");
+
+    ifc.setupThreeMeshBVH(
+      computeBoundsTree,
+      disposeBoundsTree,
+      acceleratedRaycast
+      );
   
     // SELECTOR EXAMPLE
     const raycaster = new Raycaster();

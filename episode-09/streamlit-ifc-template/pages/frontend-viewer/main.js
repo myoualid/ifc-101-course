@@ -13,6 +13,13 @@ import {
 } from "./vendor/three.module.js";
 import { OrbitControls } from "./vendor/OrbitControls.js";
 
+import {
+  acceleratedRaycast,
+  computeBoundsTree,
+  disposeBoundsTree
+} from './vendor/three-mesh-bvh/three-mesh-bvh.js';
+
+
 // The `Streamlit` object exists because our html file includes
 // `streamlit-component-lib.js`.
 // If you get an error about "Streamlit" not being defined, that
@@ -102,6 +109,12 @@ function setup(){
     //Sets up the IFC loading
 
     ifc.setWasmPath("./vendor/IFC/");
+
+    ifc.setupThreeMeshBVH(
+      computeBoundsTree,
+      disposeBoundsTree,
+      acceleratedRaycast
+      );
   
     // SELECTOR EXAMPLE
     const raycaster = new Raycaster();
@@ -138,9 +151,14 @@ function setup(){
       function getObjectData(event) {
         const intersection = getIntersection(event);
         if (intersection){
-          const props = ifc.getItemProperties(intersection.modelID, intersection.id);
-          const propsets = ifc.getPropertySets(intersection.modelID, intersection.id,true);
-          return JSON.stringify(propsets, null, 2)
+          const objectId = intersection.id;
+          const props = ifc.getItemProperties(intersection.modelID, objectId);
+          const propsets = ifc.getPropertySets(intersection.modelID, objectId,true);
+          let data = {
+            "id": objectId,
+            "props": propsets,
+          }
+          return JSON.stringify(data, null, 2)
         }
       }
       
@@ -172,7 +190,8 @@ function setup(){
     // Highlight Selected Object and send Object data to Python
       window.ondblclick = (event) => {
         highlight(event, selectMat, selectModel);
-        sendValue(getObjectData(event))
+        let data = getObjectData(event);
+        sendValue(data)
       }
 }
 
@@ -180,7 +199,6 @@ async function sigmaLoader (url, ifcLoader){
   const ifcModel = await ifcLoader.ifcManager.parse(url.buffer)
   ifcModels.push(ifcModel.mesh)
   window.scene.add(ifcModel.mesh)
-  console.log(ifcModel)
 }
     
 /**
