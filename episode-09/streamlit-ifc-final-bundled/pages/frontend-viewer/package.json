@@ -1,0 +1,21 @@
+{
+  "name": "streamlit-ifc-js-component",
+  "version": "0.0.1",
+  "description": "bundle to load for streamlit",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rollup -c ./rollup.config.js",
+    "watch": "rollup -w -c ./rollup.config.js"
+  },
+  "author": "sigma dimensions",
+  "license": "MIT",
+  "dependencies": {
+    "web-ifc": "^0.0.36"
+  },
+  "devDependencies": {
+    "@open-wc/building-rollup": "^2.0.2",
+    "@rollup/plugin-node-resolve": "^15.0.1",
+    "rollup": "^2.11.0"
+  }
+}
