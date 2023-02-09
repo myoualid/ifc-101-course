@@ -14,4 +14,4 @@ For the latest streamlit versions, we need to have python 3.10 and higher instal
 ## Run 
 Run the App with:
 
-`streamlit run HomePage.py`
+`streamlit run Homepage.py`
